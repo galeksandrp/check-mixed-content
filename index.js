@@ -21,10 +21,6 @@ let crawler = new Crawler({
     onSuccess: function (data) {
         let bad = false
         let $ = cheerio.load(data.body)
-        $('img').each(function () {
-            if ($(this).attr('src')) bad = $(this).attr('src').indexOf('http:') > -1
-            if ($(this).attr('srcset')) bad = $(this).attr('srcset').indexOf('http:') > -1
-        })
         $('iframe').each(function () {
             if ($(this).attr('src')) bad = $(this).attr('src').indexOf('http:') > -1
         })
@@ -34,30 +30,17 @@ let crawler = new Crawler({
         $('object').each(function () {
             if ($(this).attr('data')) bad = $(this).attr('data').indexOf('http:') > -1
         })
-        $('form').each(function () {
-            if ($(this).attr('action')) bad = $(this).attr('action').indexOf('http:') > -1
-        })
         $('embed').each(function () {
             if ($(this).attr('src')) bad = $(this).attr('src').indexOf('http:') > -1
         })
-        $('video').each(function () {
-            if ($(this).attr('src')) bad = $(this).attr('src').indexOf('http:') > -1
-        })
-        $('audio').each(function () {
-            if ($(this).attr('src')) bad = $(this).attr('src').indexOf('http:') > -1
-        })
-        $('source').each(function () {
-            if ($(this).attr('src')) bad = $(this).attr('src').indexOf('http:') > -1
-            if ($(this).attr('srcset')) bad = $(this).attr('srcset').indexOf('http:') > -1
-        })
-        $('params').each(function () {
+        $('param').each(function () {
             if ($(this).attr('value')) bad = $(this).attr('value').indexOf('http:') > -1
         })
         $('link').each(function () {
             if ($(this).attr('href')) bad = $(this).attr('href').indexOf('http:') > -1
         })
         if (bad) {
-            console.log(`===> ${data.url} has mixed content!`)
+            console.log(`===> ${data.url} has active mixed content!`)
             badCount++
         }
         else {
